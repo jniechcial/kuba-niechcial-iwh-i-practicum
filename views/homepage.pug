@@ -1,0 +1,24 @@
+doctype html
+html 
+    head 
+        title= `${title}`
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(rel="stylesheet", href="/css/style.css")
+    body    
+        h1 Games (Custom Objects) Table
+
+        a(href='update-cobj') Add new
+
+        table
+            tr
+                th Name
+                th Publisher
+                th Year of release
+                th Actions
+            each game in data
+                tr
+                    td #{game.properties.name}
+                    td #{game.properties.publisher} 
+                    td #{game.properties.year_released}
+                    td 
+                        a(href=`/update-cobj?id=${game.id}`) Edit
