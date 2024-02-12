@@ -29,31 +29,40 @@ app.get('/', async (req, res) => {
     }
 });
 
-* * App.post sample
-app.post('/update', async (req, res) => {
-    const update = {
-        properties: {
-            "favorite_book": req.body.newVal
-        }
-    }
-
-    const email = req.query.email;
-    const updateContact = `https://api.hubapi.com/crm/v3/objects/contacts/${email}?idProperty=email`;
+// TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
+// * Code for Route 2 goes here
+app.get('/update-cobj', async (req, res) => {    
     const headers = {
         Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
         'Content-Type': 'application/json'
     };
+    
+    const isUpdate = req.query.id ? true : false;
 
-    try { 
-        await axios.patch(updateContact, update, { headers } );
-        res.redirect('back');
+    try {
+        if (isUpdate) {
+            const getGame = `https://api.hubspot.com/crm/v3/objects/2-123036810/${req.query.id}?properties=name,publisher,year_released`;
+            const response = await axios.get(getGame, { headers });
+            const data = response.data;
+            const title = "Update Custom Object Form | Integrating With HubSpot I Practicum";
+
+            console.log(data);
+            res.render('updates', { title: title, id: req.query.id, name: data.properties.name, publisher: data.properties.publisher, year_released: data.properties.year_released });
+        } else {
+            const title = "Create Custom Object Form | Integrating With HubSpot I Practicum";
+            res.render('updates', { title: title, name: '', publisher: '', year_released: '' });
+        }
+            
     } catch(err) {
         console.error(err);
     }
-
 });
-*/
 
+// TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
+// * Code for Route 3 goes here
+app.post('/update-cobj', async (req, res) => {
+    
+});
 
 // * Localhost
 app.listen(3000, () => console.log('Listening on http://localhost:3000'));

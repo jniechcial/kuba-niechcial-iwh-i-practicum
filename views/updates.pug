@@ -1,0 +1,25 @@
+doctype html
+html(lang="en")
+    head
+        title= `${title}`
+        link(rel="stylesheet", href="/css/style.css")
+    body
+        .form-wrapper
+            if id 
+                p Editing game id: #{id}
+            else 
+                p Creating new game
+            
+            form(method="POST")
+                label(for="name") Name
+                input(type="text" name="name" value=`${name}` required)
+
+                label(for="publisher") Publisher
+                input(type="text" name="publisher" value=`${publisher}` required)
+
+                label(for="year_released") Year released
+                input(type="text" name="year_released" value=`${year_released}` required)
+
+                input(type="submit" value="Submit")
+
+        a(href='/') Return to the homepage
