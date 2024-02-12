@@ -11,6 +11,9 @@ html(lang="en")
                 p Creating new game
             
             form(method="POST")
+                if id                    
+                    input(type="hidden" name="id" value=`${id}`)
+                
                 label(for="name") Name
                 input(type="text" name="name" value=`${name}` required)
 

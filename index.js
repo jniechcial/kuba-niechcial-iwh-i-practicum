@@ -61,7 +61,45 @@ app.get('/update-cobj', async (req, res) => {
 // TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
 // * Code for Route 3 goes here
 app.post('/update-cobj', async (req, res) => {
+    const headers = {
+        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+        'Content-Type': 'application/json'
+    };
     
+    const isUpdate = req.query.id ? true : false;
+
+    try {
+        const properties = {
+            properties: {
+                "name": req.body.name,
+                "publisher": req.body.publisher,
+                "year_released": req.body.year_released
+            }
+        }
+
+        if (isUpdate) {
+            const updateGame = `https://api.hubspot.com/crm/v3/objects/2-123036810/${req.query.id}`;
+        
+            const response = await axios.patch(updateGame, properties, { headers });
+
+            const data = response.data;
+
+            console.log(data);
+            res.redirect('/');
+        } else {
+            const createGame = `https://api.hubspot.com/crm/v3/objects/2-123036810`;
+
+            const response = await axios.post(createGame, properties, { headers });
+
+            const data = response.data;
+
+            console.log(data);
+            res.redirect('/');
+        }
+            
+    } catch(err) {
+        console.error(err);
+    }
 });
 
 // * Localhost
